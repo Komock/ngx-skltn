@@ -18,6 +18,8 @@
   "author": "Vadim Petrov – github.com/komock",
   "scripts": {
     "build": "ng build",
+    "build:demo": "ng build --prod --base-href 'https://komock.github.io/ngx-skltn/'",
+    "publish:demo": "npx ngh --dir='../demo/ngx-skltn'",
     "e2e": "ng e2e",
     "lint": "ng lint",
     "ng": "ng",
