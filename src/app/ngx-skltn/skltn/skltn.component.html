@@ -1,0 +1,41 @@
+<div [innerHTML]="animationCss"></div>
+<svg class="svg-root" x="0px" y="0px" [attr.viewBox]="viewBox" *ngIf="shapes?.length">
+
+  <!-- Gradient -->
+  <linearGradient id="grad">
+    <stop class="stop stop--1" [attr.stop-color]="flareFill" stop-opacity="0" offset="0"></stop>
+    <stop class="stop stop--2" [attr.stop-color]="flareFill" stop-opacity="1" offset="50%"></stop>
+    <stop class="stop stop--3" [attr.stop-color]="flareFill" stop-opacity="0" offset="100%"></stop>
+  </linearGradient>
+
+  <defs>
+    <!-- Mask -->
+    <mask id="mask">
+      <!-- Shapes -->
+      <ng-container *ngFor="let shape of shapes">
+        <!-- Rect Type -->
+        <rect *ngIf="shape.type === 'rect'" [attr.x]="shape.x" [attr.y]="shape.y" [attr.rx]="shape.rx"
+          [attr.ry]="shape.ry" [attr.width]="shape.width" [attr.height]="shape.height" fill="#FFFFFF" />
+        <!-- Circle Type -->
+        <circle *ngIf="shape.type === 'circle'" [attr.cx]="shape.cx" [attr.cy]="shape.cy" [attr.r]="shape.r" fill="#FFFFFF"></circle>
+        <!-- Path Type -->
+        <ng-container *ngIf="shape.type === 'path'">
+          <g fill="#FFFFFF" [attr.transform]="shape.transform">
+            <ng-container *ngTemplateOutlet="shape.template"></ng-container>
+          </g>
+        </ng-container>
+      </ng-container>
+    </mask>
+  </defs>
+
+  <g mask="url(#mask)">
+    <!-- Gradient Rectangle -->
+    <rect class="grad" x="-20%" y="0" width="140%" height="100%" [attr.fill]="bgFill"></rect>
+
+    <!-- Flare -->
+    <rect class="flare" x="0" y="0" [attr.width]="flareWidth" height="100%" fill="url(#grad)"></rect>
+  </g>
+
+</svg>
+
+<ng-content></ng-content>
