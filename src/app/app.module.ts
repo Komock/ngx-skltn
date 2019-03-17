@@ -10,10 +10,15 @@ import { NgxSkltnModule } from './ngx-skltn/ngx-skltn.module';
   ],
   imports: [
     BrowserModule,
-    NgxSkltnModule,
+    NgxSkltnModule.forRoot({
+      rectRadius: 10,
+      flareWidth: '150px',
+      bgFill: '#d8d5d1',
+      flareFill: 'rgba(255,255,255, 0.5)',
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [ AppComponent ],
   exports: []
 })
-export class AppModule { }
+export class AppModule {}

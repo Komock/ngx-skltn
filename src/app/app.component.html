@@ -2,14 +2,13 @@
   <h1>Ngx-Skltn</h1>
   <!-- Example -->
   <h3>Card with Avatar</h3>
-  <skltn-root duration="1.4" [rectRadius]="10" flareWidth="50%" bgFill="#d8d5d1" flareFill="rgba(255,255,255, 0.5)">
+  <skltn-root>
     <!-- Card with Avatar -->
     <div class="skltn-card">
       <div skltn-bone class="skltn-card__avatar" type="circle"></div>
       <div class="skltn-card__body">
         <div skltn-bone class="skltn-card__title"></div>
-        <div skltn-bone class="skltn-card__line"></div>
-        <div skltn-bone class="skltn-card__line"></div>
+        <div skltn-bone *ngFor="let radius of [1, 2, 3]" class="skltn-card__line"></div>
       </div>
     </div>
 

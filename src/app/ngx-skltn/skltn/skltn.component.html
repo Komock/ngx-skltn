@@ -17,7 +17,7 @@
         <rect *ngIf="shape.type === 'rect'" [attr.x]="shape.x" [attr.y]="shape.y" [attr.rx]="shape.rx"
           [attr.ry]="shape.ry" [attr.width]="shape.width" [attr.height]="shape.height" fill="#FFFFFF" />
         <!-- Circle Type -->
-        <circle *ngIf="shape.type === 'circle'" [attr.cx]="shape.cx" [attr.cy]="shape.cy" [attr.r]="shape.r" fill="#FFFFFF"></circle>
+        <ellipse *ngIf="shape.type === 'circle'" [attr.cx]="shape.cx" [attr.cy]="shape.cy" [attr.rx]="shape.rx" [attr.ry]="shape.ry" fill="#FFFFFF"></ellipse>
         <!-- Path Type -->
         <ng-container *ngIf="shape.type === 'path'">
           <g fill="#FFFFFF" [attr.transform]="shape.transform">
@@ -30,10 +30,10 @@
 
   <g mask="url(#mask)">
     <!-- Gradient Rectangle -->
-    <rect class="grad" x="-20%" y="0" width="140%" height="100%" [attr.fill]="bgFill"></rect>
+    <rect class="grad" x="0" y="0" width="100%" height="100%" [attr.fill]="bgFill"></rect>
 
     <!-- Flare -->
-    <rect class="flare" x="0" y="0" [attr.width]="flareWidth" height="100%" fill="url(#grad)"></rect>
+    <rect class="flare" [attr.x]="'-' + flareWidth" y="0" [attr.width]="flareWidth" height="100%" fill="url(#grad)"></rect>
   </g>
 
 </svg>

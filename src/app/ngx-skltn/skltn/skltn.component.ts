@@ -1,11 +1,13 @@
 import {
   Component, OnInit, Input, ContentChildren, QueryList, ElementRef,
-  ChangeDetectorRef, HostListener, AfterViewInit
+  ChangeDetectorRef, HostListener, AfterViewInit, Inject
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, tap, delay } from 'rxjs/operators';
+import { SkltnConfigService } from '../services/skltn-config.service';
+import { SkltnConfig } from '../interfaces/skltn-config';
 
 @Component({
   selector: 'skltn-root',
@@ -16,13 +18,17 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
   @Input() rectRadius: number;
 
-  @Input() bgFill = '#ddd';
+  @Input() bgFill: string;
 
-  @Input() flareFill = '#f5f5f5';
+  @Input() flareFill: string;
 
-  @Input() flareWidth = '80px';
+  @Input() flareWidth: string;
 
-  @Input() duration = '2';
+  @Input() duration: number;
+
+  @Input() delay: number;
+
+  @Input() timing: number;
 
   @ContentChildren(SkltnBoneDirective) bones: QueryList<SkltnBoneDirective>;
 
@@ -36,11 +42,31 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
   updStream$ = new Subject();
 
+  defaultConfig: SkltnConfig = {
+    rectRadius: 4,
+    bgFill: '#ddd',
+    flareFill: 'rgba(255, 255, 255, 0.6)',
+    flareWidth: '150px',
+    duration: 1200,
+    delay: 0,
+    timing: 'ease-in-out',
+  };
+
   constructor(
+    @Inject(SkltnConfigService) private config,
     private element: ElementRef,
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {
+    const conf = Object.assign({}, this.defaultConfig, this.config);
+    this.rectRadius = conf.rectRadius;
+    this.bgFill = conf.bgFill;
+    this.flareFill = conf.flareFill;
+    this.flareWidth = conf.flareWidth;
+    this.duration = conf.duration;
+    this.delay = conf.delay;
+    this.timing = conf.timing;
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -52,9 +78,15 @@ export class SkltnComponent implements OnInit, AfterViewInit {
     <style>
     @keyframes flareAnimation {
         0% { x: calc(0% - ${this.flareWidth}); }
-        100% { x: calc(100% + ${this.flareWidth}); }
+        100% { x: 100%; }
     }
-    .flare { animation: flareAnimation ${this.duration}s infinite; }
+    .flare {
+      animation-name: flareAnimation;
+      animation-duration: ${this.duration}ms;
+      animation-timing-function: ${this.timing};
+      animation-iteration-count: infinite;
+      animation-delay: ${this.delay}ms;
+    }
     </style>`);
 
     // Update
@@ -66,7 +98,6 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.calcShapes();
-    // console.log(this.shapes);
     this.cd.detectChanges();
   }
 
@@ -78,15 +109,16 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
     // SVG Shapes
     this.shapes = this.bones.toArray().map(bone => {
-      const el = bone.element.nativeElement;
-      const clientRect = el.getBoundingClientRect();
+      const boneEl = bone.element.nativeElement;
+      const clientRect = boneEl.getBoundingClientRect();
       const radius = bone.rectRadius || this.rectRadius;
       if (bone.type === 'circle') {
         return {
           type: 'circle',
           cx: clientRect.x - this.parentClientRect.x + clientRect.width / 2,
           cy: clientRect.y - this.parentClientRect.y + clientRect.height / 2,
-          r: clientRect.height / 2,
+          rx: clientRect.width / 2,
+          ry: clientRect.height / 2,
         };
       }
       if (bone.type === 'path') {

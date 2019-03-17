@@ -1,6 +1,6 @@
 {
   "name": "ngx-skltn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Skeleton loader for Angular",
   "keywords": [
@@ -19,7 +19,7 @@
   "scripts": {
     "build": "ng build",
     "build:demo": "ng build --prod --base-href 'https://komock.github.io/ngx-skltn/'",
-    "publish:demo": "npx ngh --dir='../demo/ngx-skltn'",
+    "publish:demo": "npx angular-cli-ghpages --dir=../demo/ngx-skltn",
     "e2e": "ng e2e",
     "lint": "ng lint",
     "ng": "ng",

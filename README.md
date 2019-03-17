@@ -1,6 +1,10 @@
 # ☠️ Ngx-Skltn
 Easily add skeleton loader to your Angular7+ app
-Example: [komock.github.io/ngx-skltn](https://komock.github.io/ngx-skltn)
+
+Demo: [komock.github.io/ngx-skltn](https://komock.github.io/ngx-skltn)
+
+## TLDR
+[Stackblitz example](https://stackblitz.com/edit/ngx-skltn)
 
 ## Features
 1. Flexible SVG skeleton based on size & position of HTML elements
@@ -19,19 +23,61 @@ npm i --save-dev ngx-skltn
 // app.module.ts
 import { NgxSkltnModule } from 'ngx-skltn';
 @NgModule({
-	declarations: [ AppComponent ],
-	imports: [
-		BrowserModule,
-		NgxSkltnModule,
-	],
-	bootstrap: [AppComponent]
+  declarations: [ AppComponent ],
+  imports: [
+    BrowserModule,
+    NgxSkltnModule.forRoot({
+    rectRadius: 4,
+        bgFill: '#CCC',
+        flareFill: '#EEE',
+        flareWidth: '120px',
+        duration: 2000,
+        delay: 300,
+      }),
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// Defaults
+// const defaultConfig = {
+// rectRadius: 4,
+// bgFill: '#ddd',
+// flareFill: 'rgba(255, 255, 255, 0.6)',
+// flareWidth: '150px',
+// duration: 1200,
+// delay: 0,
+// timing: 'ease-in-out',
+// };
 ```
+
+```css
+/* styles.css */
+.skltn-card {
+  margin: 20px 0 48px;
+}
+.skltn-card__avatar {
+  width: 60px;
+  height: 60px; /* <-- Don't forget height */
+  margin-bottom: 20px;
+}
+.skltn-card__title {
+  height: 32px;
+  margin-bottom: 20px;
+}
+.skltn-card__line {
+  height: 20px;
+  margin-bottom: 20px;
+}
+.skltn-card__line:last-child {
+  width: 60%;
+}
+```
+
 
 ```html
 <!-- app.component.html -->
-<skltn-root duration="1" [rectRadius]="10" flareWidth="50%" bgFill="#d8d5d1" flareFill="rgba(255,255,255, 0.5)">
+<skltn-root duration="1000" [rectRadius]="10" flareWidth="50%" bgFill="#d8d5d1" flareFill="rgba(255,255,255, 0.5)">
   <!-- Card with Avatar -->
   <div class="skltn-card">
     <div skltn-bone class="skltn-card__avatar" type="circle"></div>
