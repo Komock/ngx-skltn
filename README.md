@@ -1,3 +1,7 @@
+[![npm version](https://badge.fury.io/js/ngx-skltn.svg)](https://badge.fury.io/js/ngx-skltn)
+
+[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/ngx-skltn.svg)](https://bundlephobia.com/result?p=ngx-skltn@latest)
+
 # ☠️ Ngx-Skltn
 Easily add skeleton loader to your Angular7+ app
 
@@ -103,3 +107,8 @@ Important! `[pathWidth]="24" [pathHeight]="22"` should be same as on `<svg>` tag
     </ng-template>
 </div>
 ```
+
+## Road Map
+1. Tests
+2. Add Logo
+3. CI

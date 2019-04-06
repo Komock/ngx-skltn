@@ -1,0 +1,39 @@
+<div class="wrap">
+  <div class="btn-wrap">
+    <button class="btn" *ngIf="!showSkltn && !items" (click)="loadRepos()">Click to Load</button>
+  </div>
+
+  <!-- Skltn -->
+  <skltn-root *ngIf="showSkltn">
+    <div class="repos">
+      <div class="repo" *ngFor="let item of skltnArr">
+        <div class="skltn-item">
+          <div class="skltn-item__avatar" skltn-bone></div>
+          <h3 class="skltn-item__title" skltn-bone></h3>
+          <div class="skltn-item__desc" skltn-bone></div>
+          <div class="skltn-item__desc skltn-item__desc_last" skltn-bone></div>
+          <div class="skltn-item__url" skltn-bone></div>
+        </div>
+      </div>
+    </div>
+  </skltn-root>
+
+  <!-- Repos List -->
+  <div class="repos" *ngIf="items?.length">
+    <div class="repo" *ngFor="let item of items">
+      <img class="repo__avatar" [attr.src]="item.owner.avatar_url">
+      <h3 class="repo__tiltle">{{item.name}}</h3>
+      <p class="repo__desc">{{item.description}}</p>
+      <a [attr.href]="item.url" class="repo__url">{{item.url}}</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="wrap wrap_src-link">
+    <a class="src-link"
+      href="https://github.com/Komock/ngx-skltn/blob/master/src/app/api-demo/api-demo.component.html">Example source
+      code</a>
+  </div>
+</div>

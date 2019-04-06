@@ -5,7 +5,7 @@ import {
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { debounceTime, tap, delay } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { SkltnConfigService } from '../services/skltn-config.service';
 import { SkltnConfig } from '../interfaces/skltn-config';
 
@@ -29,6 +29,8 @@ export class SkltnComponent implements OnInit, AfterViewInit {
   @Input() delay: number;
 
   @Input() timing: number;
+
+  @Input() showSkltn = true;
 
   @ContentChildren(SkltnBoneDirective) bones: QueryList<SkltnBoneDirective>;
 

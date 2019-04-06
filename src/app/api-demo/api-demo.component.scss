@@ -1,0 +1,57 @@
+.btn-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.repos {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    min-height: 300px;
+}
+
+.repo {
+    width: calc(50% - 20px);
+    margin-top: 42px;
+    padding: 24px 24px 32px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    &__avatar {
+        display: block;
+        max-width: 90px;
+        height: auto;
+    }
+    &__title {
+        font-size: 24px;
+        margin: 24px 0 0;
+    }
+    &__desc {
+        font-size: 18px;
+    }
+    &__link {
+        font-size: 14px;
+    }
+}
+
+.skltn-item {
+    &__avatar {
+        display: block;
+        width: 90px;
+        height: 90px;
+    }
+    &__title {
+        height: 24px;
+        margin: 32px 0 0;
+    }
+    &__desc {
+        height: 18px;
+        margin: 18px 0 0;
+        &_last {
+            width: 60%;
+        }
+    }
+    &__url {
+        height: 14px;
+        margin: 28px 0 0;
+    }
+}
