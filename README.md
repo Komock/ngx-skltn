@@ -1,5 +1,4 @@
 [![npm version](https://badge.fury.io/js/ngx-skltn.svg)](https://badge.fury.io/js/ngx-skltn)
-
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/ngx-skltn.svg)](https://bundlephobia.com/result?p=ngx-skltn@latest)
 
 # ☠️ Ngx-Skltn
