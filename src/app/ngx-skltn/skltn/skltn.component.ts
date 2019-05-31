@@ -28,7 +28,7 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
   @Input() delay: number;
 
-  @Input() timing: number;
+  @Input() timing: string;
 
   @Input() showSkltn = true;
 
@@ -55,7 +55,7 @@ export class SkltnComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
-    @Inject(SkltnConfigService) private config,
+    @Inject(SkltnConfigService) private config: SkltnConfig,
     private element: ElementRef,
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
