@@ -4,6 +4,7 @@ import { SkltnComponent } from './skltn/skltn.component';
 import { SkltnBoneDirective } from './directives/skltn-bone.directive';
 import { SkltnConfigService } from './services/skltn-config.service';
 import { SkltnConfig } from './interfaces/skltn-config';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { SkltnConfig } from './interfaces/skltn-config';
     SkltnBoneDirective,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule,
   ],
   exports: [
     SkltnComponent,
@@ -22,12 +24,10 @@ export class NgxSkltnModule {
   static forRoot(config: Partial<SkltnConfig> = {}): ModuleWithProviders {
     return {
       ngModule: NgxSkltnModule,
-      providers: [
-        {
-          provide: SkltnConfigService,
-          useValue: config
-        }
-      ]
+      providers: [{
+        provide: SkltnConfigService,
+        useValue: config
+      }]
     };
   }
 }

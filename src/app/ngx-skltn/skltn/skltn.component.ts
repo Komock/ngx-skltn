@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
 import { SkltnConfigService } from '../services/skltn-config.service';
 import { SkltnConfig } from '../interfaces/skltn-config';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'skltn-root',
@@ -30,7 +31,7 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
   @Input() timing: string;
 
-  @Input() showSkltn = true;
+  @Input() showSkltn = false;
 
   @ContentChildren(SkltnBoneDirective) bones: QueryList<SkltnBoneDirective>;
 
@@ -41,6 +42,8 @@ export class SkltnComponent implements OnInit, AfterViewInit {
   parentClientRect: any;
 
   animationCss: SafeHtml;
+
+  href: string;
 
   updStream$ = new Subject();
 
@@ -58,7 +61,8 @@ export class SkltnComponent implements OnInit, AfterViewInit {
     @Inject(SkltnConfigService) private config: SkltnConfig,
     private element: ElementRef,
     private sanitizer: DomSanitizer,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router,
   ) {
     const conf = Object.assign({}, this.defaultConfig, this.config);
     this.rectRadius = conf.rectRadius;
@@ -95,6 +99,16 @@ export class SkltnComponent implements OnInit, AfterViewInit {
     this.updStream$.pipe(
       debounceTime(100),
       tap(() => this.calcShapes()),
+    ).subscribe();
+
+    // Update href (Safari Bug, SVG Ref Path)
+    this.href = window.location.href;
+    this.router.events.pipe(
+      tap((event: RouterEvent) => {
+        if (event instanceof NavigationEnd) {
+          this.href = window.location.href;
+        }
+      })
     ).subscribe();
   }
 
