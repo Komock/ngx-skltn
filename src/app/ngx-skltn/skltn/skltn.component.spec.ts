@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Component, ViewChild } from '@angular/core';
 import { SkltnComponent } from './skltn.component';
 import { NgxSkltnModule } from '../ngx-skltn.module';
@@ -32,6 +32,7 @@ class TestHostComponent {
 describe('SkltnComponent', () => {
     let component: TestHostComponent;
     let fixture: ComponentFixture<TestHostComponent>;
+    let maskId: string;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -43,21 +44,25 @@ describe('SkltnComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(TestHostComponent);
         component = fixture.componentInstance;
+        maskId = fixture.componentInstance.skltnComponent.maskId;
         fixture.detectChanges();
     });
 
-    it(`should have ${linesCount} lines`, () => {
+    it(`should have ${linesCount} lines`, fakeAsync(() => {
+        fixture.detectChanges();
+        tick(1400);
+        fixture.detectChanges();
         expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__line').length).toEqual(linesCount);
-        expect(fixture.nativeElement.querySelectorAll('.svg-root #mask rect').length - titleCount).toEqual(linesCount);
-    });
+        expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' rect').length - titleCount).toEqual(linesCount);
+    }));
 
     it(`should have ${titleCount} title`, () => {
         expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__title').length).toEqual(titleCount);
-        expect(fixture.nativeElement.querySelectorAll('.svg-root #mask rect').length - linesCount).toEqual(titleCount);
+        expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' rect').length - linesCount).toEqual(titleCount);
     });
 
     it(`should have ${avatarCount} title`, () => {
         expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__avatar').length).toEqual(avatarCount);
-        expect(fixture.nativeElement.querySelectorAll('.svg-root #mask ellipse').length).toEqual(avatarCount);
+        expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' ellipse').length).toEqual(avatarCount);
     });
 });

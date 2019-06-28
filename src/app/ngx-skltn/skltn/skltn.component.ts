@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Input, ContentChildren, QueryList, ElementRef,
-  ChangeDetectorRef, HostListener, AfterViewInit, Inject
+  ChangeDetectorRef, HostListener, AfterViewInit, Inject, NgZone, OnDestroy,
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -8,14 +8,13 @@ import { Subject } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
 import { SkltnConfigService } from '../services/skltn-config.service';
 import { SkltnConfig } from '../interfaces/skltn-config';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'skltn-root',
   templateUrl: './skltn.component.html',
   styleUrls: ['./skltn.component.scss']
 })
-export class SkltnComponent implements OnInit, AfterViewInit {
+export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() rectRadius: number;
 
@@ -31,7 +30,7 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
   @Input() timing: string;
 
-  @Input() showSkltn = false;
+  @Input() showSkltn = true;
 
   @ContentChildren(SkltnBoneDirective) bones: QueryList<SkltnBoneDirective>;
 
@@ -44,6 +43,14 @@ export class SkltnComponent implements OnInit, AfterViewInit {
   animationCss: SafeHtml;
 
   href: string;
+
+  sufix: string;
+
+  gradientId: string;
+
+  maskId: string;
+
+  checkHrefIntervalID: number;
 
   updStream$ = new Subject();
 
@@ -62,7 +69,7 @@ export class SkltnComponent implements OnInit, AfterViewInit {
     private element: ElementRef,
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef,
-    private router: Router,
+    private zone: NgZone,
   ) {
     const conf = Object.assign({}, this.defaultConfig, this.config);
     this.rectRadius = conf.rectRadius;
@@ -72,6 +79,9 @@ export class SkltnComponent implements OnInit, AfterViewInit {
     this.duration = conf.duration;
     this.delay = conf.delay;
     this.timing = conf.timing;
+    this.sufix = this.getSufixWithID();
+    this.gradientId = 'gradient-' + this.sufix;
+    this.maskId = 'mask-' + this.sufix;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -103,18 +113,30 @@ export class SkltnComponent implements OnInit, AfterViewInit {
 
     // Update href (Safari Bug, SVG Ref Path)
     this.href = window.location.href;
-    this.router.events.pipe(
-      tap((event: RouterEvent) => {
-        if (event instanceof NavigationEnd) {
+
+    this.zone.runOutsideAngular(() => {
+      this.checkHrefIntervalID = window.setInterval(() => {
+        if (this.href !== window.location.href) {
           this.href = window.location.href;
+          this.cd.detectChanges();
         }
-      })
-    ).subscribe();
+      }, 100);
+    });
   }
 
   ngAfterViewInit() {
     this.calcShapes();
     this.cd.detectChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.checkHrefIntervalID) {
+      window.clearInterval(this.checkHrefIntervalID);
+    }
+  }
+
+  getSufixWithID(): string {
+    return Math.random().toString(36).substr(2, 4) + '-skltn';
   }
 
   calcShapes(): void {

@@ -4,7 +4,6 @@ import { SkltnComponent } from './skltn/skltn.component';
 import { SkltnBoneDirective } from './directives/skltn-bone.directive';
 import { SkltnConfigService } from './services/skltn-config.service';
 import { SkltnConfig } from './interfaces/skltn-config';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,6 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    RouterModule,
   ],
   exports: [
     SkltnComponent,

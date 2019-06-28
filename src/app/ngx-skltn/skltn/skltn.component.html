@@ -1,8 +1,8 @@
 <div [innerHTML]="animationCss"></div>
-<svg class="svg-root" x="0px" y="0px" [attr.viewBox]="viewBox" *ngIf="shapes?.length">
+<svg class="svg-root" x="0px" y="0px" [attr.viewBox]="viewBox" *ngIf="shapes?.length && showSkltn">
 
   <!-- Gradient -->
-  <linearGradient id="skltn_gradient">
+  <linearGradient [attr.id]="gradientId">
     <stop class="stop stop--1" [attr.stop-color]="flareFill" stop-opacity="0" offset="0"></stop>
     <stop class="stop stop--2" [attr.stop-color]="flareFill" stop-opacity="1" offset="50%"></stop>
     <stop class="stop stop--3" [attr.stop-color]="flareFill" stop-opacity="0" offset="100%"></stop>
@@ -10,7 +10,7 @@
 
   <defs>
     <!-- Mask -->
-    <mask id="skltn_mask">
+    <mask [attr.id]="maskId">
       <!-- Shapes -->
       <ng-container *ngFor="let shape of shapes">
         <!-- Rect Type -->
@@ -28,12 +28,12 @@
     </mask>
   </defs>
 
-  <g [attr.mask]="'url(' + href + '#skltn_mask)'" *ngIf="showSkltn">
+  <g [attr.mask]="'url(' + href + '#' + maskId + ')'">
     <!-- Background Rectangle -->
     <rect class="bg-fill" x="0" y="0" width="100%" height="100%" [attr.fill]="bgFill"></rect>
 
     <!-- Flare -->
-    <rect class="flare" [attr.x]="'-' + flareWidth" y="0" [attr.width]="flareWidth" height="100%" [attr.fill]="'url(' + href + '#skltn_gradient)'"></rect>
+    <rect class="flare" [attr.x]="'-' + flareWidth" y="0" [attr.width]="flareWidth" height="100%" [attr.fill]="'url(' + href + '#' + gradientId + ')'"></rect>
   </g>
 
 </svg>
