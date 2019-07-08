@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-skltn": [
+        "dist/ngx-skltn"
+      ],
+      "ngx-skltn/*": [
+        "dist/ngx-skltn/*"
+      ]
+    }
   }
 }

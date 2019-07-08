@@ -25,19 +25,19 @@ npm i --save-dev ngx-skltn
 ## Usage
 ```ts
 // app.module.ts
-import { NgxSkltnModule } from 'ngx-skltn';
+import { NgxSkltnModule, SkltnConfig } from 'ngx-skltn';
+const skltnConfig: SkltnConfig = {
+  rectRadius: 10,
+  flareWidth: '150px',
+  bgFill: '#d8d5d1',
+  flareFill: 'rgba(255,255,255, 0.5)',
+};
+
 @NgModule({
   declarations: [ AppComponent ],
   imports: [
     BrowserModule,
-    NgxSkltnModule.forRoot({
-    rectRadius: 4,
-        bgFill: '#CCC',
-        flareFill: '#EEE',
-        flareWidth: '120px',
-        duration: 2000,
-        delay: 300,
-      }),
+    NgxSkltnModule.forRoot(skltnConfig),
   ],
   bootstrap: [AppComponent]
 })
@@ -109,6 +109,8 @@ Important! `[pathWidth]="24" [pathHeight]="22"` should be same as on `<svg>` tag
 ```
 
 ## Road Map
-1. Tests
-2. Add Logo
-3. CI
+1. [x] Tests 
+2. [x] Travis CI
+3. [] Add Logo
+4. [] Check Ivy support
+5. [] New animations
