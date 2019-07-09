@@ -109,8 +109,9 @@ Important! `[pathWidth]="24" [pathHeight]="22"` should be same as on `<svg>` tag
 ```
 
 ## Road Map
-1. [x] Tests 
-2. [x] Travis CI
-3. [] Add Logo
-4. [] Check Ivy support
-5. [] New animations
+[x] Tests
+[x] Travis CI
+[] Check global animation
+[] Add Logo
+[] Check Ivy support
+[] New animations
