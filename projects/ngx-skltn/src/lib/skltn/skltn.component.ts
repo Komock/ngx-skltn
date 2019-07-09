@@ -5,7 +5,7 @@ import {
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { SkltnConfigService } from '../services/skltn-config.service';
 import { SkltnConfig } from '../interfaces/skltn-config';
 
@@ -108,8 +108,7 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     // Update
     this.updStream$.pipe(
       debounceTime(100),
-      tap(() => this.calcShapes()),
-    ).subscribe();
+    ).subscribe(() => this.calcShapes());
 
     // Update href (Safari Bug, SVG Ref Path)
     this.href = window.location.href;
