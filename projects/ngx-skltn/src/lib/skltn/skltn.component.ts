@@ -5,7 +5,6 @@ import {
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
 import { SkltnConfigService } from '../services/skltn-config.service';
 import { SkltnConfig } from '../interfaces/skltn-config';
 
@@ -84,6 +83,22 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     this.maskId = 'mask-' + this.sufix;
   }
 
+  private debounce(fn: () => void, ms: number): () => void {
+    let timer = null;
+    return (...args: any): void => {
+      const onComplete = () => {
+        fn.apply(this, args);
+        timer = null;
+      };
+
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(onComplete, ms);
+    };
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.updStream$.next();
@@ -106,10 +121,8 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     </style>`);
 
     // Update
-    this.updStream$.pipe(
-      debounceTime(100),
-      tap(() => this.calcShapes()),
-    ).subscribe();
+    const calcShapesDebounced = this.debounce(this.calcShapes, 100);
+    this.updStream$.subscribe(() => calcShapesDebounced());
 
     // Update href (Safari Bug, SVG Ref Path)
     this.href = window.location.href;
