@@ -6,15 +6,15 @@ artifacts.forEach(file => {
   let destPath = path.resolve(__dirname, 'dist/ngx-skltn/', file)
   fs.readFile(fromPath, 'utf-8', (err, data) => {
     if (err) {
-      console.log('An error occured:', err)
-      return
+      console.log('An error occured:', err);
+      return;
     }
     fs.writeFile(destPath, data, (err) => {
       if (err) {
-        console.log('An error occured:', err)
-        return
+        console.log('An error occured:', err);
+        return;
       }
-      console.log(`Copied ${file}:`)
+      console.log(`Copied ${file}:`);
     })
   })
 })

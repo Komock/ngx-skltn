@@ -1,48 +1,68 @@
 <div class="wrap">
   <!-- Example -->
-  <h3>Card with Avatar</h3>
-  <skltn-root>
-    <!-- Card with Avatar -->
-    <div class="skltn-card">
-      <div skltn-bone class="skltn-card__avatar" type="circle"></div>
-      <div class="skltn-card__body">
-        <div skltn-bone class="skltn-card__title"></div>
-        <div skltn-bone *ngFor="let line of [1, 2, 3]" class="skltn-card__line"></div>
+  <skltn-root class="examples">
+
+    <div class="sections">
+
+      <div class="section">
+        <h3>Card with Avatar</h3>
+        <!-- Card with Avatar -->
+        <div class="skltn-card card">
+          <div skltn-bone class="skltn-card__avatar" type="circle"></div>
+          <div class="skltn-card__body">
+            <div skltn-bone class="skltn-card__title"></div>
+            <div skltn-bone *ngFor="let line of [1, 2]" class="skltn-card__line"></div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Image with Caption -->
-    <div class="skltn-picture">
-      <div skltn-bone class="skltn-picture__img"></div>
-      <div class="skltn-picture__caption">
-        <div skltn-bone class="skltn-picture__line"></div>
-        <div skltn-bone class="skltn-picture__line"></div>
+      <div class="section">
+        <h3>Custom Path Template</h3>
+        <div class="card">
+          <div class="skltn-chart" skltn-bone type="path" [pathWidth]="260" [pathHeight]="100">
+            <ng-template #boneTemp>
+              <svg width="260" height="100">
+                <path
+                  d="M0,100l0-50.6574c0-3.9935,4.4507-6.3754,7.7735-4.1603L24.453,56.302c3.359,2.2393,7.735,2.2393,11.094,0
+                  l20.4222-13.6148C58.5975,40.935,61.6856,40,64.8444,40h19.2347c3.7324,0,7.2523-1.7367,9.5233-4.6988L113.3213,9.581
+                  c3.2716-4.2673,9.9331-3.4056,12.0113,1.5536l21.2123,50.6204c1.6486,3.9341,6.7603,4.9399,9.7764,1.9237l16.6076-16.6076
+                  c3.9052-3.9052,10.2369-3.9052,14.1422,0l8.8284,8.8284C198.525,58.525,202.086,60,205.799,60h9.5343
+                  c3.0292,0,5.9767-0.9825,8.4-2.8l26.6667-20c3.9554-2.9666,9.6-0.1443,9.6,4.8v58H0z">
+                </path>
+              </svg>
+            </ng-template>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="skltn-picture skltn-picture_right">
-      <div skltn-bone class="skltn-picture__img"></div>
-      <div class="skltn-picture__caption">
-        <div skltn-bone class="skltn-picture__line"></div>
-        <div skltn-bone class="skltn-picture__line"></div>
+      <div class="section">
+        <h3>Image with Caption</h3>
+        <div class="card">
+          <div class="skltn-picture">
+            <div skltn-bone class="skltn-picture__img"></div>
+            <div class="skltn-picture__caption">
+              <div skltn-bone class="skltn-picture__line"></div>
+              <div skltn-bone class="skltn-picture__line"></div>
+            </div>
+          </div>
+
+          <div class="skltn-picture skltn-picture_right">
+            <div skltn-bone class="skltn-picture__img"></div>
+            <div class="skltn-picture__caption">
+              <div skltn-bone class="skltn-picture__line"></div>
+              <div skltn-bone class="skltn-picture__line"></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <h3>Overwrite radius</h3>
-    <div *ngFor="let radius of [12, 8, 4]" skltn-bone class="skltn-line" [rectRadius]="radius"></div>
-    <div>
+      <div class="section">
+        <h3>Overwrite radius</h3>
+        <div class="card">
+          <div *ngFor="let radius of [12, 8, 4]" skltn-bone class="skltn-line" [rectRadius]="radius"></div>
+        </div>
+      </div>
 
-    </div>
-
-    <h3>Custom Path Template</h3>
-    <div class="skltn-chart" skltn-bone type="path" [pathWidth]="24" [pathHeight]="22">
-      <ng-template #boneTemp>
-        <svg width="24" height="22">
-          <path
-            d="M0 5.783v-2.783l4 4 5-6 9 7.878 6-3.922v2.437l-6.176 3.989-8.6-7.528-5.09 6.108-4.134-4.179zm18.909 7.279l-1.267.818-1.135-.994-7.058-6.177-3.778 4.534-1.41 1.692-1.548-1.566-2.713-2.743v14.374h24v-13.226l-5.091 3.288z">
-          </path>
-        </svg>
-      </ng-template>
     </div>
 
   </skltn-root>

@@ -6,8 +6,8 @@ import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { SkltnConfigService } from '../services/skltn-config.service';
 import { SkltnConfig } from '../interfaces/skltn-config';
+import { SkltnService } from '../services/skltn.service';
 
 @Component({
   selector: 'skltn-root',
@@ -65,13 +65,13 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   constructor(
-    @Inject(SkltnConfigService) private config: SkltnConfig,
+    private skltnService: SkltnService,
     private element: ElementRef,
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef,
     private zone: NgZone,
   ) {
-    const conf = Object.assign({}, this.defaultConfig, this.config);
+    const conf = this.skltnService.config;
     this.rectRadius = conf.rectRadius;
     this.bgFill = conf.bgFill;
     this.flareFill = conf.flareFill;
