@@ -22,6 +22,7 @@
     "build:demo": "ng build --prod --base-href 'https://komock.github.io/ngx-skltn/'",
     "publish:demo": "npx angular-cli-ghpages --dir=./dist/demo",
     "build:lib": "ng build ngxSkltn",
+    "build:lib:watch": "ng build ngxSkltn --watch",
     "test:lib": "ng test ngxSkltn",
     "postbuild": "node ./copy-artifacts.js",
     "prepublish:lib": "ng build ngxSkltn && node ./copy-artifacts.js"

@@ -1,12 +1,13 @@
 <div [innerHTML]="animationCss"></div>
+
 <svg class="svg-root" x="0px" y="0px" [attr.viewBox]="viewBox" *ngIf="shapes?.length && showSkltn">
 
   <!-- Gradient -->
   <linearGradient [attr.id]="gradientId">
-    <stop class="stop stop--1" [attr.stop-color]="flareFill" stop-opacity="0" offset="0"></stop>
-    <stop class="stop stop--2" [attr.stop-color]="flareFill" stop-opacity="1" offset="50%"></stop>
-    <stop class="stop stop--3" [attr.stop-color]="flareFill" stop-opacity="0" offset="100%"></stop>
-  </linearGradient>
+      <stop class="stop stop--1" [attr.stop-color]="flareFill" stop-opacity="0" offset="0"></stop>
+      <stop class="stop stop--2" [attr.stop-color]="flareFill" stop-opacity="1" offset="50%"></stop>
+      <stop class="stop stop--3" [attr.stop-color]="flareFill" stop-opacity="0" offset="100%"></stop>
+    </linearGradient>
 
   <defs>
     <!-- Mask -->

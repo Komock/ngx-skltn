@@ -158,7 +158,7 @@
       "root": "projects/ngx-skltn",
       "sourceRoot": "projects/ngx-skltn/src",
       "projectType": "library",
-      "prefix": "lib",
+      "prefix": "skltn",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",

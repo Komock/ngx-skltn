@@ -13,12 +13,9 @@
 .repo {
     width: calc(50% - 20px);
     margin-top: 42px;
-    padding: 24px 24px 32px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
     &__avatar {
         display: block;
-        max-width: 90px;
+        max-width: 70px;
         height: auto;
     }
     &__title {
@@ -36,22 +33,22 @@
 .skltn-item {
     &__avatar {
         display: block;
-        width: 90px;
-        height: 90px;
+        width: 60px;
+        height: 60px;
     }
     &__title {
         height: 24px;
-        margin: 32px 0 0;
+        margin: 24px 0 0;
     }
     &__desc {
-        height: 18px;
-        margin: 18px 0 0;
+        height: 16px;
+        margin: 16px 0 0;
         &_last {
             width: 60%;
         }
     }
     &__url {
-        height: 14px;
-        margin: 28px 0 0;
+        height: 16px;
+        margin: 24px 0 0;
     }
 }

@@ -9,7 +9,7 @@ import { BaseDemoComponent } from './base-demo/base-demo.component';
 import { ApiDemoComponent } from './api-demo/api-demo.component';
 
 const skltnConfig: SkltnConfig = {
-  rectRadius: 10,
+  rectRadius: 4,
   flareWidth: '150px',
   bgFill: '#d8d5d1',
   flareFill: 'rgba(255,255,255, 0.5)',
@@ -26,10 +26,18 @@ const skltnConfig: SkltnConfig = {
     HttpClientModule,
     RouterModule.forRoot([{
       path: '',
-      component: BaseDemoComponent
+      redirectTo: 'base',
+      pathMatch: 'full',
+    }, {
+      path: 'base',
+      component: BaseDemoComponent,
     }, {
       path: 'api',
-      component: ApiDemoComponent
+      component: ApiDemoComponent,
+    }, {
+      path: '**',
+      redirectTo: 'base',
+      pathMatch: 'full',
     }]),
     NgxSkltnModule.forRoot(skltnConfig),
   ],

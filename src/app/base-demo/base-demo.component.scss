@@ -1,17 +1,35 @@
+.sections {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: calc(50% - 20px);
+    .card {
+        height: 100%;
+    }
+}
+
 .skltn-card {
-    margin: 20px 0 48px;
+    flex: 1;
+    background: #fff;
+    height: 100%;
     &__avatar {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         margin-bottom: 20px;
     }
     &__title {
-        height: 32px;
+        height: 24px;
         margin-bottom: 20px;
     }
     &__line {
-        height: 20px;
-        margin-bottom: 20px;
+        height: 12px;
+        margin-bottom: 12px;
         &:last-child {
             width: 60%;
         }
@@ -50,6 +68,7 @@
 
 .skltn-chart {
     height: 100px;
+    margin-top: 36px;
 }
 
 @media (max-width: 640px) {

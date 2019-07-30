@@ -2,8 +2,9 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SkltnComponent } from './skltn/skltn.component';
 import { SkltnBoneDirective } from './directives/skltn-bone.directive';
-import { SkltnConfigService } from './services/skltn-config.service';
+import { SkltnService } from './services/skltn.service';
 import { SkltnConfig } from './interfaces/skltn-config';
+import { SKLTN_CONFIG_TOKEN } from './services/skltn-config.service';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,13 @@ export class NgxSkltnModule {
     return {
       ngModule: NgxSkltnModule,
       providers: [{
-        provide: SkltnConfigService,
-        useValue: config
+        provide: SKLTN_CONFIG_TOKEN,
+        useValue: config,
+      },
+      {
+        provide: SkltnService,
+        useClass: SkltnService,
+        deps: [ SKLTN_CONFIG_TOKEN ],
       }]
     };
   }

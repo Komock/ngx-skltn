@@ -5,6 +5,8 @@
 # ☠️ Ngx-Skltn
 Easily add skeleton loader to your Angular7+ app
 
+![](https://komock.github.io/ngx-skltn/assets/skltn-preview.gif)
+
 Demo: [komock.github.io/ngx-skltn](https://komock.github.io/ngx-skltn)
 
 ## TLDR
