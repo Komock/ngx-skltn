@@ -1,6 +1,6 @@
 {
   "name": "ngx-skltn",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": false,
   "description": "Skeleton loader for Angular",
   "keywords": [
@@ -62,9 +62,9 @@
     "zone.js": "~0.8.26"
   },
   "peerDependencies": {
-    "@angular/common": "^7.0.0 <9",
-    "@angular/core": "^7.0.0 <9",
-    "@angular/platform-browser": "^7.0.0 <9",
+    "@angular/common": "^7.0.0 <8",
+    "@angular/core": "^7.0.0 <8",
+    "@angular/platform-browser": "^7.0.0 <8",
     "rxjs": "^6.3.3"
   }
 }
