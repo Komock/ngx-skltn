@@ -1,6 +1,9 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ngx-skltn",
+  "whitelistedNonPeerDependencies": [
+    "angular-resize-event"
+  ],
   "lib": {
     "entryFile": "src/public_api.ts"
   }
