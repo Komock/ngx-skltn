@@ -1,11 +1,11 @@
 import {
   Component, OnInit, Input, ContentChildren, QueryList, ElementRef,
-  ChangeDetectorRef, HostListener, AfterViewInit, Inject, NgZone, OnDestroy,
+  ChangeDetectorRef, HostListener, AfterViewInit, NgZone, OnDestroy,
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, interval, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
 import { SkltnConfig } from '../interfaces/skltn-config';
 import { SkltnService } from '../services/skltn.service';
 
@@ -108,9 +108,13 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     // Update
     this.subscriptions = this.updStream$
       .pipe(
-        debounceTime(100),
+        // use throttle instead of debounce to make sure last resize event is processed
+        throttleTime(150, undefined, { trailing: true, leading: true }),
       )
-      .subscribe(() => this.calcShapes());
+      .subscribe(() => {
+        this.calcShapes();
+        this.cd.detectChanges();
+      });
 
     // Update href (Safari Bug, SVG Ref Path)
     this.href = window.location.href;
