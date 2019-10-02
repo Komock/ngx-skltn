@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
+import { Subject, interval, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { SkltnConfig } from '../interfaces/skltn-config';
 import { SkltnService } from '../services/skltn.service';
@@ -50,7 +50,7 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
   maskId: string;
 
-  checkHrefIntervalID: number;
+  subscriptions: Subscription;
 
   updStream$ = new Subject();
 
@@ -106,21 +106,24 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     </style>`);
 
     // Update
-    this.updStream$.pipe(
-      debounceTime(100),
-    ).subscribe(() => this.calcShapes());
+    this.subscriptions = this.updStream$
+      .pipe(
+        debounceTime(100),
+      )
+      .subscribe(() => this.calcShapes());
 
     // Update href (Safari Bug, SVG Ref Path)
     this.href = window.location.href;
 
-    this.zone.runOutsideAngular(() => {
-      this.checkHrefIntervalID = window.setInterval(() => {
-        if (this.href !== window.location.href) {
-          this.href = window.location.href;
-          this.cd.detectChanges();
-        }
-      }, 100);
+    const checkHref = interval(100)
+      .subscribe(() => {
+          if (this.href !== window.location.href) {
+            this.href = window.location.href;
+            this.cd.detectChanges();
+          }
     });
+
+    this.subscriptions.add(checkHref);
   }
 
   ngAfterViewInit() {
@@ -129,8 +132,8 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    if (this.checkHrefIntervalID) {
-      window.clearInterval(this.checkHrefIntervalID);
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 
