@@ -39,4 +39,6 @@
 
 </svg>
 
-<ng-content></ng-content>
+<div (resized)="onResize($event)">
+  <ng-content></ng-content>
+</div>

@@ -1,5 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AngularResizedEventModule } from 'angular-resize-event';
 import { SkltnComponent } from './skltn/skltn.component';
 import { SkltnBoneDirective } from './directives/skltn-bone.directive';
 import { SkltnService } from './services/skltn.service';
@@ -13,6 +14,7 @@ import { SKLTN_CONFIG_TOKEN } from './services/skltn-config.service';
   ],
   imports: [
     CommonModule,
+    AngularResizedEventModule
   ],
   exports: [
     SkltnComponent,
