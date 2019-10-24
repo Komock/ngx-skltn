@@ -43,9 +43,9 @@ describe('SkltnComponent', () => {
 
     beforeEach(() => {
         fixture = TestBed.createComponent(TestHostComponent);
+        fixture.detectChanges();
         component = fixture.componentInstance;
         maskId = fixture.componentInstance.skltnComponent.maskId;
-        fixture.detectChanges();
     });
 
     it(`should have ${linesCount} lines`, fakeAsync(() => {

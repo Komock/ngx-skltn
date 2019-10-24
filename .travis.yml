@@ -8,6 +8,7 @@ node_js:
 branches:
   only:
     - master
+    - versions/v2
 
 addons:
   apt:
@@ -24,4 +25,4 @@ install:
   - npm install
 
 script:
-  - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+  ng test ngxSkltn --browsers ChromeHeadlessNoSandbox --watch=false 
