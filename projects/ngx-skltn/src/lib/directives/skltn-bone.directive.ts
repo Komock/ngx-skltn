@@ -9,7 +9,7 @@ export class SkltnBoneDirective {
   @Input() rectRadius: number;
   @Input() pathWidth: number;
   @Input() pathHeight: number;
-  @ContentChild('boneTemp') template: TemplateRef<any>;
+  @ContentChild('boneTemp', { static: true }) template: TemplateRef<any>;
 
   constructor(
     public element: ElementRef

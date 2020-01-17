@@ -22,7 +22,7 @@ const linesCount = 5;
     `
 })
 class TestHostComponent {
-    @ViewChild(SkltnComponent) skltnComponent: SkltnComponent;
+    @ViewChild(SkltnComponent, { static: true }) skltnComponent: SkltnComponent;
     lines: number[];
     constructor() {
         this.lines = (new Array(linesCount)).fill(1);
