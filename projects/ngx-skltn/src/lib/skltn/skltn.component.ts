@@ -1,11 +1,11 @@
 import {
   Component, OnInit, Input, ContentChildren, QueryList, ElementRef,
-  ChangeDetectorRef, HostListener, AfterViewInit, Inject, NgZone, OnDestroy,
+  ChangeDetectorRef, HostListener, AfterViewInit, NgZone, OnDestroy,
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Subject, interval, Subscription } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
 import { SkltnConfig } from '../interfaces/skltn-config';
 import { SkltnService } from '../services/skltn.service';
 
@@ -32,6 +32,8 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() showSkltn = true;
 
+  @Input() checkInterval = 100;
+
   @ContentChildren(SkltnBoneDirective) bones: QueryList<SkltnBoneDirective>;
 
   viewBox: string;
@@ -50,7 +52,7 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
   maskId: string;
 
-  checkHrefIntervalID: number;
+  subscriptions: Subscription[] = [];
 
   updStream$ = new Subject();
 
@@ -92,12 +94,12 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.animationCss = this.sanitizer.bypassSecurityTrustHtml(`
     <style>
-    @keyframes flareAnimation {
+    @keyframes skltnFlareAnimation {
         0% { x: calc(0% - ${this.flareWidth}); }
         100% { x: 100%; }
     }
-    .flare {
-      animation-name: flareAnimation;
+    .skltn-flare {
+      animation-name: skltnFlareAnimation;
       animation-duration: ${this.duration}ms;
       animation-timing-function: ${this.timing};
       animation-iteration-count: infinite;
@@ -107,31 +109,48 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Update
     this.updStream$.pipe(
-      debounceTime(100),
+      throttleTime(50),
     ).subscribe(() => this.calcShapes());
 
     // Update href (Safari Bug, SVG Ref Path)
     this.href = window.location.href;
 
     this.zone.runOutsideAngular(() => {
-      this.checkHrefIntervalID = window.setInterval(() => {
+      const checkIntervalSubscription = interval(this.checkInterval).subscribe(() => {
+
+        // Check if href changed
         if (this.href !== window.location.href) {
           this.href = window.location.href;
           this.cd.detectChanges();
         }
-      }, 100);
+
+        // Check if root element resized
+        const el = this.element.nativeElement;
+        const { width, height } = el.getBoundingClientRect();
+        if (this.parentClientRect.width !== width || this.parentClientRect.height !== height) {
+          this.updStream$.next();
+          this.cd.detectChanges();
+        }
+
+      });
+      this.subscriptions.push(checkIntervalSubscription);
     });
   }
 
   ngAfterViewInit() {
     this.calcShapes();
     this.cd.detectChanges();
+
+    // Bones Updates
+    const bonesUpdatesSubscription = this.bones.changes
+      .subscribe((bones) => {
+        this.calcShapes();
+      });
+    this.subscriptions.push(bonesUpdatesSubscription);
   }
 
   ngOnDestroy() {
-    if (this.checkHrefIntervalID) {
-      window.clearInterval(this.checkHrefIntervalID);
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   getSufixWithID(): string {

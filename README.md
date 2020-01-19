@@ -115,11 +115,3 @@ Important! `[pathWidth]="24" [pathHeight]="22"` should be same as on `<svg>` tag
     </ng-template>
 </div>
 ```
-
-## Road Map
-[x] Tests
-[x] Travis CI
-[] Check global animation
-[] Add Logo
-[] Check Ivy support
-[] New animations
