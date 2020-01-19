@@ -63,10 +63,27 @@
         </div>
       </div>
 
+      <ng-container *ngIf="additionalSections.length">
+        <div class="section" *ngFor="let item of additionalSections; index as i">
+          <h3>Section - {{ i + 1 }}</h3>
+          <div class="skltn-card card">
+            <div skltn-bone class="skltn-card__avatar" type="circle"></div>
+            <div class="skltn-card__body">
+              <div skltn-bone class="skltn-card__title"></div>
+              <div skltn-bone class="skltn-card__line"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
     </div>
 
   </skltn-root>
   <!-- Example End -->
+
+  <div class="add-btn-wrap" *ngIf="additionalSections.length < 4">
+    <button (click)="addSection()">Add Section</button>
+  </div>
 </div>
 
 <div class="footer">
