@@ -5,7 +5,7 @@ import {
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, interval, Subscription } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
+import { throttleTime, tap, takeUntil } from 'rxjs/operators';
 import { SkltnConfig } from '../interfaces/skltn-config';
 import { SkltnService } from '../services/skltn.service';
 
@@ -52,9 +52,9 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
   maskId: string;
 
-  subscriptions: Subscription[] = [];
-
   updStream$ = new Subject();
+
+  unsubscribe$ = new Subject();
 
   defaultConfig: SkltnConfig = {
     rectRadius: 4,
@@ -116,24 +116,24 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     this.href = window.location.href;
 
     this.zone.runOutsideAngular(() => {
-      const checkIntervalSubscription = interval(this.checkInterval).subscribe(() => {
+      interval(this.checkInterval).pipe(
+        tap(() => {
+          // Check if href changed
+          if (this.href !== window.location.href) {
+            this.href = window.location.href;
+            this.cd.detectChanges();
+          }
 
-        // Check if href changed
-        if (this.href !== window.location.href) {
-          this.href = window.location.href;
-          this.cd.detectChanges();
-        }
-
-        // Check if root element resized
-        const el = this.element.nativeElement;
-        const { width, height } = el.getBoundingClientRect();
-        if (this.parentClientRect.width !== width || this.parentClientRect.height !== height) {
-          this.updStream$.next();
-          this.cd.detectChanges();
-        }
-
-      });
-      this.subscriptions.push(checkIntervalSubscription);
+          // Check if root element resized
+          const el = this.element.nativeElement;
+          const { width, height } = el.getBoundingClientRect();
+          if (this.parentClientRect.width !== width || this.parentClientRect.height !== height) {
+            this.updStream$.next();
+            this.cd.detectChanges();
+          }
+        }),
+        takeUntil(this.unsubscribe$),
+      ).subscribe();
     });
   }
 
@@ -142,15 +142,17 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cd.detectChanges();
 
     // Bones Updates
-    const bonesUpdatesSubscription = this.bones.changes
-      .subscribe((bones) => {
+    this.bones.changes.pipe(
+      tap((bones) => {
         this.calcShapes();
-      });
-    this.subscriptions.push(bonesUpdatesSubscription);
+      }),
+      takeUntil(this.unsubscribe$),
+    ).subscribe();
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getSufixWithID(): string {
