@@ -54,6 +54,8 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updStream$ = new Subject();
 
+  checkStream$ = new Subject();
+
   unsubscribe$ = new Subject();
 
   defaultConfig: SkltnConfig = {
@@ -116,7 +118,7 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     this.href = window.location.href;
 
     this.zone.runOutsideAngular(() => {
-      interval(this.checkInterval).pipe(
+      this.checkStream$.pipe(
         tap(() => {
           // Check if href changed
           if (this.href !== window.location.href) {
@@ -131,6 +133,9 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
             this.updStream$.next();
             this.cd.detectChanges();
           }
+          setTimeout(() => {
+            this.checkStream$.next();
+          }, this.checkInterval);
         }),
         takeUntil(this.unsubscribe$),
       ).subscribe();
@@ -148,6 +153,9 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       takeUntil(this.unsubscribe$),
     ).subscribe();
+
+    // Run Check
+    this.checkStream$.next();
   }
 
   ngOnDestroy() {
