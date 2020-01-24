@@ -112,6 +112,7 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     // Update
     this.updStream$.pipe(
       throttleTime(50),
+      takeUntil(this.unsubscribe$),
     ).subscribe(() => this.calcShapes());
 
     // Update href (Safari Bug, SVG Ref Path)
