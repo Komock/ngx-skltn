@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Subject, interval, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { throttleTime, tap, takeUntil } from 'rxjs/operators';
 import { SkltnConfig } from '../interfaces/skltn-config';
 import { SkltnService } from '../services/skltn.service';
