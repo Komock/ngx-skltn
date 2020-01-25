@@ -65,4 +65,13 @@ describe('SkltnComponent', () => {
         expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__avatar').length).toEqual(avatarCount);
         expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' ellipse').length).toEqual(avatarCount);
     });
+
+    it(`should be unsubscribed from all streams after destroy component`, () => {
+        const skltnComponent = fixture.componentInstance.skltnComponent;
+        skltnComponent.ngOnDestroy();
+        fixture.detectChanges();
+        expect(skltnComponent.updStream$.observers.length).toEqual(0);
+        expect(skltnComponent.checkStream$.observers.length).toEqual(0);
+        expect(skltnComponent.unsubscribe$.isStopped).toEqual(true);
+    });
 });

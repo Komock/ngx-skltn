@@ -17,6 +17,12 @@ Demo: [komock.github.io/ngx-skltn](https://komock.github.io/ngx-skltn)
 2. Single animation for all shapes
 3. Allow use custom shapes as nested SVG element (example below)
 
+## Versions
+| ngx-skltn | Angular |
+| --------- | ------- |
+| >1        | >=5     |
+| >2        | >=8     |
+
 ## Install
 Npm
 
@@ -109,11 +115,3 @@ Important! `[pathWidth]="24" [pathHeight]="22"` should be same as on `<svg>` tag
     </ng-template>
 </div>
 ```
-
-## Road Map
-[x] Tests
-[x] Travis CI
-[] Check global animation
-[] Add Logo
-[] Check Ivy support
-[] New animations

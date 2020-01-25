@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './base-demo.component.html',
   styleUrls: ['./base-demo.component.scss']
 })
-export class BaseDemoComponent {}
+export class BaseDemoComponent {
+  additionalSections = [];
+
+  addSection() {
+    this.additionalSections.push(1);
+  }
+}

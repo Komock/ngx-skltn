@@ -10,13 +10,6 @@ branches:
     - master
     - versions/v2
 
-addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
-
 cache:
   directories:
     - ./node_modules
@@ -25,4 +18,4 @@ install:
   - npm install
 
 script:
-  ng test ngxSkltn --browsers ChromeHeadlessNoSandbox --watch=false 
+  ng test ngxSkltn --browsers ChromeHeadlessNoSandbox --watch=false
