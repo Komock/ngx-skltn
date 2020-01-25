@@ -8,6 +8,7 @@ node_js:
 branches:
   only:
     - master
+    - versions/v1
     - versions/v2
 
 cache:
