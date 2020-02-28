@@ -4,9 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgxSkltnModule, SkltnConfig } from 'ngx-skltn';
+
 import { BaseDemoComponent } from './base-demo/base-demo.component';
 import { ApiDemoComponent } from './api-demo/api-demo.component';
+import { NestedDemoComponent } from './nested-demo/nested-demo.component';
+import { CardComponent } from './nested-demo/card/card.component';
+import { SkltnConfig, NgxSkltnModule } from 'projects/ngx-skltn/src/public_api';
 
 const skltnConfig: SkltnConfig = {
   rectRadius: 4,
@@ -20,6 +23,8 @@ const skltnConfig: SkltnConfig = {
     AppComponent,
     BaseDemoComponent,
     ApiDemoComponent,
+    NestedDemoComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +39,9 @@ const skltnConfig: SkltnConfig = {
     }, {
       path: 'api',
       component: ApiDemoComponent,
+    }, {
+      path: 'nested',
+      component: NestedDemoComponent,
     }, {
       path: '**',
       redirectTo: 'base',

@@ -1,18 +1,24 @@
 import {
-  Component, OnInit, Input, ContentChildren, QueryList, ElementRef,
+  Component, OnInit, Input, ElementRef,
   ChangeDetectorRef, HostListener, AfterViewInit, NgZone, OnDestroy,
 } from '@angular/core';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { throttleTime, tap, takeUntil } from 'rxjs/operators';
+import { throttleTime, debounceTime, filter, tap, takeUntil } from 'rxjs/operators';
 import { SkltnConfig } from '../interfaces/skltn-config';
 import { SkltnService } from '../services/skltn.service';
+import { generateId } from '../helpers';
+import { BonesList } from '../classes/bones-list.class';
 
 @Component({
   selector: 'skltn-root',
   templateUrl: './skltn.component.html',
-  styleUrls: ['./skltn.component.scss']
+  styleUrls: ['./skltn.component.scss'],
+  providers: [{
+    provide: BonesList,
+    useClass: BonesList,
+  }]
 })
 export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -33,8 +39,6 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() showSkltn = true;
 
   @Input() checkInterval = 100;
-
-  @ContentChildren(SkltnBoneDirective) bones: QueryList<SkltnBoneDirective>;
 
   viewBox: string;
 
@@ -68,12 +72,15 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     timing: 'ease-in-out',
   };
 
+  private bones: SkltnBoneDirective[];
+
   constructor(
     private skltnService: SkltnService,
     private element: ElementRef,
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef,
     private zone: NgZone,
+    private bonesList: BonesList,
   ) {
     const conf = this.skltnService.config;
     this.rectRadius = conf.rectRadius;
@@ -108,6 +115,21 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
       animation-delay: ${this.delay}ms;
     }
     </style>`);
+
+    // Bones Updates
+    this.bonesList.changes.pipe(
+      debounceTime(50),
+      tap(list => {
+        this.bones = list;
+        this.calcShapes();
+        this.cd.detectChanges();
+      }),
+      filter((list, index) => index === 0),
+      tap(() => {
+        this.checkStream$.next();
+      }),
+      takeUntil(this.unsubscribe$),
+    ).subscribe();
 
     // Update
     this.updStream$.pipe(
@@ -144,19 +166,6 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.calcShapes();
-    this.cd.detectChanges();
-
-    // Bones Updates
-    this.bones.changes.pipe(
-      tap((bones) => {
-        this.calcShapes();
-      }),
-      takeUntil(this.unsubscribe$),
-    ).subscribe();
-
-    // Run Check
-    this.checkStream$.next();
   }
 
   ngOnDestroy() {
@@ -165,7 +174,7 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getSufixWithID(): string {
-    return Math.random().toString(36).substr(2, 4) + '-skltn';
+    return generateId() + '-skltn';
   }
 
   calcShapes(): void {
@@ -173,9 +182,8 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     const el = this.element.nativeElement;
     this.parentClientRect = el.getBoundingClientRect();
     this.viewBox = `0 0 ${this.parentClientRect.width} ${this.parentClientRect.height}`;
-
     // SVG Shapes
-    this.shapes = this.bones.toArray().map(bone => {
+    this.shapes = this.bones.map(bone => {
       const boneEl = bone.element.nativeElement;
       const clientRect = boneEl.getBoundingClientRect();
       const radius = bone.rectRadius || this.rectRadius;
