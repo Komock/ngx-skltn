@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { debounceTime, takeUntil, delay, take } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 import { Component, ViewChild } from '@angular/core';
 import { SkltnComponent } from './skltn.component';
 import { NgxSkltnModule } from '../ngx-skltn.module';
@@ -30,7 +32,9 @@ class TestHostComponent {
 }
 
 describe('SkltnComponent', () => {
+    let checkStream$: Observable<any>;
     let component: TestHostComponent;
+    let skltnComponent: SkltnComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let maskId: string;
 
@@ -45,33 +49,46 @@ describe('SkltnComponent', () => {
         fixture = TestBed.createComponent(TestHostComponent);
         fixture.detectChanges();
         component = fixture.componentInstance;
+        skltnComponent = fixture.componentInstance.skltnComponent;
         maskId = fixture.componentInstance.skltnComponent.maskId;
+        // tslint:disable-next-line: no-string-literal
+        checkStream$ = skltnComponent['checkStream$'].pipe(
+            take(1),
+        );
     });
 
-    it(`should have ${linesCount} lines`, fakeAsync(() => {
-        fixture.detectChanges();
-        tick(1400);
-        fixture.detectChanges();
+    it(`should have ${linesCount} lines`, (done) => {
         expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__line').length).toEqual(linesCount);
-        expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' rect').length - titleCount).toEqual(linesCount);
-    }));
-
-    it(`should have ${titleCount} title`, () => {
-        expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__title').length).toEqual(titleCount);
-        expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' rect').length - linesCount).toEqual(titleCount);
+        checkStream$.subscribe(() => {
+            const rects = fixture.nativeElement.querySelectorAll(`.svg-root #${maskId} rect`);
+            expect(rects.length - titleCount).toEqual(linesCount);
+            done();
+        });
     });
 
-    it(`should have ${avatarCount} title`, () => {
+    it(`should have ${titleCount} title`, (done) => {
+        expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__title').length).toEqual(titleCount);
+        checkStream$.subscribe(() => {
+            const rects = fixture.nativeElement.querySelectorAll(`.svg-root #${maskId} rect`);
+            expect(rects.length - linesCount).toEqual(titleCount);
+            done();
+        });
+    });
+
+    it(`should have ${avatarCount} title`, (done) => {
         expect(fixture.nativeElement.querySelectorAll('.skltn-card .skltn-card__avatar').length).toEqual(avatarCount);
-        expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' ellipse').length).toEqual(avatarCount);
+        checkStream$.subscribe(() => {
+            expect(fixture.nativeElement.querySelectorAll('.svg-root #' + maskId + ' ellipse').length).toEqual(avatarCount);
+            done();
+        });
     });
 
     it(`should be unsubscribed from all streams after destroy component`, () => {
-        const skltnComponent = fixture.componentInstance.skltnComponent;
-        skltnComponent.ngOnDestroy();
+        const skltnCmp = fixture.componentInstance.skltnComponent;
+        skltnCmp.ngOnDestroy();
         fixture.detectChanges();
-        expect(skltnComponent.updStream$.observers.length).toEqual(0);
-        expect(skltnComponent.checkStream$.observers.length).toEqual(0);
-        expect(skltnComponent.unsubscribe$.isStopped).toEqual(true);
+        expect(skltnCmp.updStream$.observers.length).toEqual(0);
+        expect(skltnCmp.checkStream$.observers.length).toEqual(0);
+        expect(skltnCmp.unsubscribe$.isStopped).toEqual(true);
     });
 });
