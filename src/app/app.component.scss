@@ -1,12 +1,10 @@
+@import "../variables";
+
 .nav-link {
     display: block;
     padding: 8px 24px;
-    color: #fff;
-    text-decoration: none;
-    background: #938b80;
-    border-radius: 6px;
+    color: darken($color-main, 20%);
     &.active {
-        color: #938b80;
-        background: lighten(#938b80, 25%);
+        color: lighten($color-main, 20%);
     }
 }

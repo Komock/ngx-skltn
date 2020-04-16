@@ -1,6 +1,6 @@
 {
   "name": "ngx-skltn",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "private": false,
   "description": "Skeleton loader for Angular",
   "keywords": [
@@ -18,7 +18,7 @@
   "license": "MIT",
   "author": "Vadim Petrov – github.com/komock",
   "peerDependencies": {
-    "@angular/common": ">=8.0.0 <9.0.0",
-    "@angular/core": ">=8.0.0 <9.0.0"
+    "@angular/common": ">=8.0.0",
+    "@angular/core": ">=8.0.0"
   }
 }
