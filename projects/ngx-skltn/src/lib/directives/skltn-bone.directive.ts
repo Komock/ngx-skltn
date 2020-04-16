@@ -1,9 +1,10 @@
-import { Directive, ElementRef, Input, ContentChild, TemplateRef } from '@angular/core';
+import { Directive, ElementRef, Input, ContentChild, TemplateRef, OnInit, OnDestroy } from '@angular/core';
+import { BonesList } from '../classes/bones-list.class';
 
 @Directive({
   selector: '[skltn-bone]',
 })
-export class SkltnBoneDirective {
+export class SkltnBoneDirective implements OnInit, OnDestroy {
 
   @Input() type: 'rect' | 'circle' | 'path';
   @Input() rectRadius: number;
@@ -11,8 +12,19 @@ export class SkltnBoneDirective {
   @Input() pathHeight: number;
   @ContentChild('boneTemp') template: TemplateRef<any>;
 
+  private id: string;
+
   constructor(
-    public element: ElementRef
-  ) { }
+    public element: ElementRef,
+    private bonesList: BonesList,
+  ) {}
+
+  ngOnInit() {
+    this.id = this.bonesList.add(this);
+  }
+
+  ngOnDestroy() {
+    this.bonesList.remove(this.id);
+  }
 
 }
