@@ -22,11 +22,11 @@
     "start:demo": "ng serve --port 5111",
     "build:demo": "ng build --prod --base-href 'https://komock.github.io/ngx-skltn/'",
     "publish:demo": "npx angular-cli-ghpages --dir=./dist/demo",
-    "build:lib": "ng build ngxSkltn",
+    "build:lib": "ng build ngxSkltn -c=production",
     "build:lib:watch": "ng build ngxSkltn --watch",
     "test:lib": "ng test ngxSkltn",
     "postbuild": "node ./copy-artifacts.js",
-    "prepublish:lib": "ng build ngxSkltn && node ./copy-artifacts.js"
+    "prepublish:lib": "ng build ngxSkltn -c=production && node ./copy-artifacts.js"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.12",
