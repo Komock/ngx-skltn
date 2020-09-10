@@ -182,7 +182,12 @@ export class SkltnComponent implements OnInit, OnDestroy, AfterViewInit {
     const el = this.element.nativeElement;
     this.parentClientRect = el.getBoundingClientRect();
     this.viewBox = `0 0 ${this.parentClientRect.width} ${this.parentClientRect.height}`;
+
     // SVG Shapes
+    if (!this.bones?.length) {
+      this.shapes = null;
+      return;
+    }
     this.shapes = this.bones.map(bone => {
       const boneEl = bone.element.nativeElement;
       const clientRect = boneEl.getBoundingClientRect();

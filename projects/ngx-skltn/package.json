@@ -1,14 +1,15 @@
 {
   "name": "ngx-skltn",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": false,
   "description": "Skeleton loader for Angular",
   "keywords": [
     "angular",
-    "angular2",
-    "angular8",
     "loader",
+    "loading",
     "skeleton",
+    "ghost",
+    "placeholder",
     "svg"
   ],
   "repository": {
