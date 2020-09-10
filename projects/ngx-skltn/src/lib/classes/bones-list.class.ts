@@ -1,7 +1,9 @@
 import { BehaviorSubject } from 'rxjs';
 import { generateId } from '../helpers';
 import { SkltnBoneDirective } from '../directives/skltn-bone.directive';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class BonesList {
 
   changes = new BehaviorSubject<SkltnBoneDirective[]>([]);

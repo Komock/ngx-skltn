@@ -20,7 +20,7 @@ import { SKLTN_CONFIG_TOKEN } from './services/skltn-config.service';
   ]
 })
 export class NgxSkltnModule {
-  static forRoot(config: Partial<SkltnConfig> = {}): ModuleWithProviders {
+  static forRoot(config: Partial<SkltnConfig> = {}): ModuleWithProviders<NgxSkltnModule> {
     return {
       ngModule: NgxSkltnModule,
       providers: [{
