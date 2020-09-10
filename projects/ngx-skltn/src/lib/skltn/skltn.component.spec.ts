@@ -15,7 +15,7 @@ const linesCount = 5;
     <skltn-root>
         <div class="skltn-card">
             <div skltn-bone class="skltn-card__avatar" type="circle"></div>
-            <div class="skltn-card__body">
+            <div class="skltn-card__body" *ngIf="showBones">
                 <div skltn-bone class="skltn-card__title"></div>
                 <div skltn-bone *ngFor="let line of lines" class="skltn-card__line"></div>
             </div>
@@ -26,6 +26,7 @@ const linesCount = 5;
 class TestHostComponent {
     @ViewChild(SkltnComponent, { static: true }) skltnComponent: SkltnComponent;
     lines: number[];
+    showBones = true;
     constructor() {
         this.lines = (new Array(linesCount)).fill(1);
     }
@@ -91,4 +92,15 @@ describe('SkltnComponent', () => {
         expect(skltnCmp.checkStream$.observers.length).toEqual(0);
         expect(skltnCmp.unsubscribe$.isStopped).toEqual(true);
     });
+
+    it(`shouldn't have shapes if all bones hidden`, (done) => {
+      fixture.componentInstance.showBones = false;
+      fixture.detectChanges();
+      checkStream$.subscribe(() => {
+        const rects = fixture.nativeElement.querySelectorAll(`.svg-root #${maskId} rect`);
+        console.log(rects);
+        expect(rects.length).toEqual(0);
+        done();
+      });
+  });
 });
