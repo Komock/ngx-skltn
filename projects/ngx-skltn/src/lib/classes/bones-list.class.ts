@@ -8,13 +8,13 @@ export class BonesList {
 
   changes = new BehaviorSubject<SkltnBoneDirective[]>([]);
 
-  private map = new Map();
+  private map = new Map<string, SkltnBoneDirective>();
 
   constructor() {}
 
-  add(elRef: SkltnBoneDirective): string {
+  add(bone: SkltnBoneDirective): string {
     const id = generateId();
-    this.map.set(id, elRef);
+    this.map.set(id, bone);
     this.emit();
     return id;
   }
@@ -25,11 +25,11 @@ export class BonesList {
   }
 
   private emit() {
-    const elementList = this.getElementList();
-    this.changes.next(elementList);
+    const list = this.getList();
+    this.changes.next(list);
   }
 
-  private getElementList(): SkltnBoneDirective[] {
+  private getList(): SkltnBoneDirective[] {
     const values = this.map.values();
     return Array.from(values);
   }
