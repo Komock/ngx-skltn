@@ -1,6 +1,6 @@
 <div class="wrap">
-  <div class="btn-wrap">
-    <button class="btn" *ngIf="!showSkltn && !items" (click)="loadRepos()">Click to Load</button>
+  <div class="btn-wrap" *ngIf="!showSkltn && !items">
+    <button class="btn" (click)="loadRepos()">Click to Load</button>
   </div>
 
   <!-- Skltn -->
