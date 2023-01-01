@@ -29,7 +29,7 @@
     "prepublish:lib": "ng build ngxSkltn -c=production && node ./copy-artifacts.js"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.0.5",
+    "@angular-devkit/build-angular": "~15.0.4",
     "@angular/animations": "^12.0.5",
     "@angular/cli": "~12.0.5",
     "@angular/common": "~12.0.5",
